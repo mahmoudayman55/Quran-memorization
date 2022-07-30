@@ -29,9 +29,7 @@ late String parentPhoneNumber;
 @HiveField(6)
 late String _evaluation;
 
-  Student( this.age, this.attendedDays, this.name, this.parentPhoneNumber,{Key? key}){
-    _id=Random().nextInt(1000000);
-  }
+  Student( this.age, this.attendedDays, this.name, this.parentPhoneNumber,{Key? key});
 
   int get id => _id;
 

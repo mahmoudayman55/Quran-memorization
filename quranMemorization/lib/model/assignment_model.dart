@@ -1,4 +1,4 @@
-import 'package:quran_memorization/models/surah_model.dart';
+import 'package:quran_memorization/model/surah_model.dart';
 
 class Assignment{
   late Surah surah;
