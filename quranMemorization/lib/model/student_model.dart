@@ -12,19 +12,19 @@ class Student extends HiveObject {
 late int _id;
 
 @HiveField(1)
-late int _rate;
+ int? _rate;
 
 @HiveField(2)
-late int age;
+ int age;
 
 @HiveField(3)
-late List<DateTime> attendedDays;
+ List<DateTime> attendedDays;
 
 @HiveField(4)
-late String name;
+ String name;
 
 @HiveField(5)
-late String parentPhoneNumber;
+ String parentPhoneNumber;
 
 @HiveField(6)
 late String _evaluation;
@@ -37,17 +37,19 @@ late String _evaluation;
 String get evaluation => _evaluation;
 
 //rate getter
-int get rate => _rate;
+int? get rate => _rate;
 
-//rate setter
-  set rate(int value) {
+  set id(int value) {
+    _id = value;
+  } //rate setter
+  set rate(int? value) {
     _rate = value;
 
     //set eval according to rate
-    if(rate>=0&&rate<=3){
+    if(rate!>=0&&rate!<=3){
       _evaluation="مقبول";
     }
-    else  if(rate>=4&&rate<=6){
+    else  if(rate!>=4&&rate!<=6){
       _evaluation="جيد";
     }
     else  if(rate==7&&rate==8){
