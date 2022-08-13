@@ -16,18 +16,35 @@ class HomeView extends StatelessWidget {
 
       return Scaffold(
         body: SafeArea(
-        child: Padding(padding: EdgeInsets.all(10),
-          child: Column(mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-             ToSectionWidget(maxHeight, maxWidth, Colors.cyan, 'students', StudentView(),"الطلاب"),
-             Container(height: .5,width: maxWidth*0.7,color: Colors.white,),
-             ToSectionWidget(maxHeight, maxWidth, Colors.cyan, 'sessions', HomeView(),"الحصص"),
-            ],
-
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ToSectionWidget(
+                    maxHeight,
+                    maxWidth,
+                    Theme.of(context).primaryColor,
+                    'students',
+                   '/students',
+                    "الطلاب"),
+                Container(
+                  height: .5,
+                  width: maxWidth * 0.7,
+                  color: Colors.white,
+                ),
+                ToSectionWidget(
+                    maxHeight,
+                    maxWidth,
+                    Theme.of(context).primaryColor,
+                    'sessions',
+                    '/sessions',
+                    "الحصص"),
+              ],
+            ),
           ),
         ),
-      ),);
+      );
     });
   }
-
 }

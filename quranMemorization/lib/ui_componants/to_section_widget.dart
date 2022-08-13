@@ -7,7 +7,7 @@ class ToSectionWidget extends StatelessWidget {
   late double maxHeight, maxWidth;
   late Color color;
   late String image,title;
-  late Widget screen;
+  late String screen;
 
   ToSectionWidget(
       this.maxHeight, this.maxWidth, this.color, this.image, this.screen,this.title, {Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class ToSectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=>Get.to(()=>screen),
+      onTap: ()=>Get.toNamed('$screen'),
       child: Container(height: maxHeight * 0.44,
         alignment: Alignment.center,
         width: maxWidth,
@@ -25,7 +25,7 @@ class ToSectionWidget extends StatelessWidget {
       child: Column(
         children: [
           Image.asset('assets/images/$image.png',height: maxHeight*0.36),
-          Text(title,style: TextStyle(color: Colors.white,fontSize: 18.sp,))
+          Text(title,style:Theme.of(context).textTheme.headline1)
         ],
       ),
       ),

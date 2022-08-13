@@ -5,16 +5,20 @@ import 'package:hive/hive.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:quran_memorization/core/controller/session_controller.dart';
 import 'package:quran_memorization/core/controller/students_controller.dart';
+import 'package:quran_memorization/core/services/constants.dart';
 import 'package:quran_memorization/core/services/hive_boxes.dart';
 import 'package:quran_memorization/model/session_model.dart';
 import 'package:quran_memorization/model/student_model.dart';
 import 'package:quran_memorization/ui_componants/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:quran_memorization/view/home_view.dart';
+import 'package:quran_memorization/view/sessions_view.dart';
 import 'package:quran_memorization/view/students_view.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +28,7 @@ void main() async {
 
   Hive.registerAdapter(SessionAdapter());
   await Hive.openBox<Session>('session');
-final box =Boxes.studentsBox();
-log(box.values.toString());
+
   runApp(const MyApp());
 }
 
@@ -46,9 +49,7 @@ class MyApp extends StatelessWidget {
         ],
         locale: Locale('ar', 'EN'),
         theme: Themes.lightTheme,
-        initialBinding: BindingsBuilder(() {
-          Get.lazyPut(()=>(StudentsController()));
-        }),
+
         home: HomeView(),
         getPages: [
           GetPage(
@@ -58,9 +59,20 @@ class MyApp extends StatelessWidget {
           GetPage(
             page: () => StudentView(),
             name: '/students',
-            binding: BindingsBuilder(() {
-            }),
+            binding: BindingsBuilder((){
+              Get.put(StudentsController());
+              Get.lazyPut(() => SessionController());
+            })
           ),
+          GetPage(
+            page: () => SessionsView(),
+            name: '/sessions',
+              binding: BindingsBuilder((){
+                Get.put((SessionsView()));
+                Get.lazyPut(() => StudentsController());
+              })
+          ),
+
         ],
       );
     });
