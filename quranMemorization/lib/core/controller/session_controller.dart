@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quran_memorization/core/controller/students_controller.dart';
 import 'package:quran_memorization/core/services/hive_boxes.dart';
 import 'package:quran_memorization/model/session_model.dart';
@@ -13,6 +14,19 @@ import '../../ui_componants/theme.dart';
 
 class SessionController extends GetxController{
   late Session session;
+
+  List<Session>sessions=[];
+
+
+  @override
+  void onInit() {
+    getSessions();
+  }
+
+  getSessions(){
+    var box=Boxes.sessionsBox();
+    sessions=box.values.toList();
+  }
 startSession(BuildContext context,double maxWidth,double maxHeight){
   StudentsController _studentsController=Get.find<StudentsController>();
   final studentsBox=Boxes.studentsBox();

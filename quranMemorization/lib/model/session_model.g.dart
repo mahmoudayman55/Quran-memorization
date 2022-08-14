@@ -17,14 +17,14 @@ class SessionAdapter extends TypeAdapter<Session> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Session(
+      fields[0] as int,
       fields[1] as int,
-      fields[6] as Student,
     )
-      .._id = fields[0] as int
       .._lastNewAssignment = (fields[2] as List).cast<Assignment>()
       .._lastRevisionAssignment = (fields[3] as List).cast<Assignment>()
       .._todayNewAssignment = (fields[4] as List).cast<Assignment>()
-      .._todayRevisionAssignment = (fields[5] as List).cast<Assignment>();
+      .._todayRevisionAssignment = (fields[5] as List).cast<Assignment>()
+      .._studentId = fields[6] as int;
   }
 
   @override
@@ -32,7 +32,7 @@ class SessionAdapter extends TypeAdapter<Session> {
     writer
       ..writeByte(7)
       ..writeByte(0)
-      ..write(obj._id)
+      ..write(obj.id)
       ..writeByte(1)
       ..write(obj.rate)
       ..writeByte(2)
@@ -44,7 +44,7 @@ class SessionAdapter extends TypeAdapter<Session> {
       ..writeByte(5)
       ..write(obj._todayRevisionAssignment)
       ..writeByte(6)
-      ..write(obj.student);
+      ..write(obj._studentId);
   }
 
   @override

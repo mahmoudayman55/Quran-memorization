@@ -5,10 +5,11 @@ import 'package:hive/hive.dart';
 
 part 'student_model.g.dart';
 
+//flutter pub run build_runner build
+
 @HiveType(typeId: 0)
 class Student extends HiveObject {
-
-  @HiveField(0)
+@HiveField(0)
 late int _id;
 
 @HiveField(1)
@@ -18,7 +19,7 @@ late int _id;
  int age;
 
 @HiveField(3)
- List<DateTime> attendedDays;
+int lastSessionId;
 
 @HiveField(4)
  String name;
@@ -29,7 +30,7 @@ late int _id;
 @HiveField(6)
 late String _evaluation;
 
-  Student( this.age, this.attendedDays, this.name, this.parentPhoneNumber,{Key? key});
+  Student( this.age, this.name, this.parentPhoneNumber,{Key? key,this.lastSessionId =0});
 
   int get id => _id;
 

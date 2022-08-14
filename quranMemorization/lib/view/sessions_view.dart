@@ -6,6 +6,7 @@ import 'package:quran_memorization/core/controller/session_controller.dart';
 import 'package:quran_memorization/ui_componants/confirm_button.dart';
 import 'package:quran_memorization/ui_componants/custom_data_column.dart';
 import 'package:quran_memorization/ui_componants/device_info_widget.dart';
+import 'package:quran_memorization/ui_componants/rate_drop_down_button.dart';
 import 'package:quran_memorization/ui_componants/to_section_widget.dart';
 import 'package:get/get.dart';
 
@@ -38,19 +39,20 @@ class SessionsView extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
                     dividerThickness: 1,
-                    dataRowHeight: maxHeight * 0.04,
+                    dataRowHeight: maxHeight * 0.08,
                     headingRowHeight: maxHeight * 0.04,
                     columnSpacing: maxWidth * 0.042,
                     headingRowColor: MaterialStateColor.resolveWith(
                         (states) => Themes.darkBlue),
                     columns: [
                       CustomDataColumn('الاسم', context),
-                      CustomDataColumn('الهاتف', context),
+                      CustomDataColumn('التسميع', context),
                       CustomDataColumn('التقييم', context),
-                      CustomDataColumn('ارشيف', context),
+                      CustomDataColumn('الحصه القادمة', context),
+                      CustomDataColumn('التاريخ', context),
                     ],
                     rows: List<DataRow>.generate(
-                        5,
+                     _sessionController.sessions.length   ,
                         (index) => DataRow(
                                 color: MaterialStateProperty.resolveWith<Color>(
                                     (states) {
@@ -60,16 +62,13 @@ class SessionsView extends StatelessWidget {
                                 }),
                                 cells: [
                                   DataCell(Text(
-                                   ' _studentController.students[index].name',
+                                   _sessionController.sessions[index].student.name,
                                     style:
                                         Theme.of(context).textTheme.headline4,
                                   )),
-                                  DataCell(Text(
-                                    '_studentController.students[index].parentPhoneNumber'
-                                    ,
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  )),
+                                  DataCell(Icon(Icons.web_rounded)),
+                                  DataCell(
+RateDropDownButton(0,'rate','error',(){})                                  ),
                                   DataCell(Text(
                                     '_studentController.students[index].evaluation',
                                     style:

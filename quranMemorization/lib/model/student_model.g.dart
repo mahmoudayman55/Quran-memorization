@@ -18,9 +18,9 @@ class StudentAdapter extends TypeAdapter<Student> {
     };
     return Student(
       fields[2] as int,
-      (fields[3] as List).cast<DateTime>(),
       fields[4] as String,
       fields[5] as String,
+      lastSessionId: fields[3] as int,
     )
       .._id = fields[0] as int
       .._rate = fields[1] as int?
@@ -38,7 +38,7 @@ class StudentAdapter extends TypeAdapter<Student> {
       ..writeByte(2)
       ..write(obj.age)
       ..writeByte(3)
-      ..write(obj.attendedDays)
+      ..write(obj.lastSessionId)
       ..writeByte(4)
       ..write(obj.name)
       ..writeByte(5)

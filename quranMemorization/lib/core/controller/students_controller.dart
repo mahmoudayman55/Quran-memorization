@@ -17,7 +17,8 @@ late List<Student>students;
     if (formKey.currentState!.validate()) {
       final box = Boxes.studentsBox();
       int id = math.Random().nextInt(1000000);
-      Student student= Student(age, [], name, phone)
+      log(id.toString());
+      Student student= Student(age, name, phone)
         ..rate = 0
         ..id = id;
       try {

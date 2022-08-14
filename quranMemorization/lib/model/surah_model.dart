@@ -1,16 +1,19 @@
 import 'dart:math';
 import 'package:hive/hive.dart';
+part 'surah_model.g.dart';
 
+@HiveType(typeId: 3)
 class Surah{
-late int _id;
 
+@HiveField(0)
+late int id;
+
+@HiveField(1)
 late String name;
 
+@HiveField(2)
 late int totalVerse;
 
-Surah(this.name, this.totalVerse){
-  _id=Random().nextInt(1000000);
-}
+Surah(this.id,this.name, this.totalVerse);
 
-int get id => _id;
 }

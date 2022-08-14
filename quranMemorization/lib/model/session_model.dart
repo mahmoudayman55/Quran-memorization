@@ -1,3 +1,4 @@
+import 'package:quran_memorization/core/services/hive_boxes.dart';
 import 'package:quran_memorization/model/student_model.dart';
 
 import 'assignment_model.dart';
@@ -5,36 +6,53 @@ import 'dart:math';
 import 'package:hive/hive.dart';
 part 'session_model.g.dart';
 @HiveType(typeId: 1)
-class Session extends HiveObject{
+class Session  {
 
   @HiveField(0)
-  late int _id;
+   int id;
 
   @HiveField(1)
   late int rate;
 
   @HiveField(2)
-  late List<Assignment> _lastNewAssignment;
+   List<Assignment> _lastNewAssignment=[];
 
   @HiveField(3)
-  late List<Assignment> _lastRevisionAssignment;
+   List<Assignment> _lastRevisionAssignment=[];
 
   @HiveField(4)
-  late List<Assignment> _todayNewAssignment;
+   List<Assignment> _todayNewAssignment=[];
 
   @HiveField(5)
-  late List<Assignment> _todayRevisionAssignment;
+   List<Assignment> _todayRevisionAssignment=[];
 
   @HiveField(6)
-  late Student student;
+   int _studentId=0;
 
-  Session(this.rate,this.student);
+  int get studentId => _studentId;
 
-  int get id => _id;
-
-  set id(int value) {
-    _id = value;
+  set studentId(int value) {
+    _studentId = value;
+    student=Boxes.studentsBox().get(_studentId)!;
   }
+
+  late Student _student;
+
+  Session(this.id,this.rate);
+
+
+
+
+  Student get student {
+
+    return _student;
+  }
+
+  set student(Student value) {
+    _student = value;
+  }
+
+
 
   List<Assignment> get lastNewAssignment => _lastNewAssignment;
 
