@@ -17,6 +17,7 @@ import 'package:quran_memorization/model/surah_model.dart';
 import 'package:quran_memorization/ui_componants/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:quran_memorization/view/home_view.dart';
+import 'package:quran_memorization/view/new_session_view.dart';
 import 'package:quran_memorization/view/sessions_view.dart';
 import 'package:quran_memorization/view/students_view.dart';
 
@@ -41,10 +42,10 @@ void main() async {
   //for testing
   var seBox = Boxes.sessionsBox();
   log(seBox.isOpen.toString());
-  seBox.put(
+
+ /* seBox.put(
       1,
       Session(15369,5)
-        ..studentId = 692090
         ..lastNewAssignment =
         [
           Assignment(
@@ -130,7 +131,7 @@ void main() async {
               16,
               Quran.quran[16]['total_verses'])
         ]);
-
+*/
   runApp(const MyApp());
 }
 
@@ -167,6 +168,12 @@ class MyApp extends StatelessWidget {
           GetPage(
               page: () => SessionsView(),
               name: '/sessions',
+              binding: BindingsBuilder(() {
+                Get.put((SessionController()));
+                Get.lazyPut(() => StudentsController());
+              })),   GetPage(
+              page: () => NewSessionView(),
+              name: '/new_session',
               binding: BindingsBuilder(() {
                 Get.put((SessionController()));
                 Get.lazyPut(() => StudentsController());

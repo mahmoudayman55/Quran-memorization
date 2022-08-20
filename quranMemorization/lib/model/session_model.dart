@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:quran_memorization/core/services/hive_boxes.dart';
 import 'package:quran_memorization/model/student_model.dart';
 
 import 'assignment_model.dart';
-import 'dart:math';
 import 'package:hive/hive.dart';
 part 'session_model.g.dart';
 @HiveType(typeId: 1)
@@ -28,17 +29,16 @@ class Session  {
 
   @HiveField(6)
    int _studentId=0;
+  @HiveField(7)
+   DateTime dateTime;
 
   int get studentId => _studentId;
 
-  set studentId(int value) {
-    _studentId = value;
-    student=Boxes.studentsBox().get(_studentId)!;
-  }
+
 
   late Student _student;
 
-  Session(this.id,this.rate);
+  Session(this.id,this.rate,this.dateTime);
 
 
 
@@ -48,8 +48,10 @@ class Session  {
     return _student;
   }
 
+
   set student(Student value) {
     _student = value;
+    _studentId=_student.id;
   }
 
 
@@ -60,7 +62,21 @@ class Session  {
 
   List<Assignment> get todayNewAssignment => _todayNewAssignment;
 
-  List<Assignment> get lastRevisionAssignment => _lastRevisionAssignment;
+  List<Assignment> get lastRevisionAssignment {
+    final box= Boxes.sessionsBox();
+    try {
+      if(box.values.where((element) => element.studentId==studentId).isEmpty){
+        return [];
+      }
+      Session session=box.values.firstWhere((element) => element.studentId==studentId);
+      _lastRevisionAssignment=session._todayRevisionAssignment;
+    } on Exception catch (e) {
+log(e.toString());
+_lastRevisionAssignment=[];
+    }
+    log(_lastNewAssignment.length.toString());
+    return _lastNewAssignment;
+  }
 
   set lastNewAssignment(List<Assignment> value) {
     _lastNewAssignment = value;

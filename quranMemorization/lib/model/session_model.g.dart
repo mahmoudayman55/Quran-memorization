@@ -19,6 +19,7 @@ class SessionAdapter extends TypeAdapter<Session> {
     return Session(
       fields[0] as int,
       fields[1] as int,
+      fields[7] as DateTime,
     )
       .._lastNewAssignment = (fields[2] as List).cast<Assignment>()
       .._lastRevisionAssignment = (fields[3] as List).cast<Assignment>()
@@ -30,7 +31,7 @@ class SessionAdapter extends TypeAdapter<Session> {
   @override
   void write(BinaryWriter writer, Session obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class SessionAdapter extends TypeAdapter<Session> {
       ..writeByte(5)
       ..write(obj._todayRevisionAssignment)
       ..writeByte(6)
-      ..write(obj._studentId);
+      ..write(obj._studentId)
+      ..writeByte(7)
+      ..write(obj.dateTime);
   }
 
   @override

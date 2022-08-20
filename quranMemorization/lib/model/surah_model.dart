@@ -16,4 +16,11 @@ late int totalVerse;
 
 Surah(this.id,this.name, this.totalVerse);
 
+
+Surah.fromJson(Map<dynamic,dynamic>map){
+  id=map['id'];
+  name=map['name'];
+  totalVerse=map['total_verses'];
+}
+
 }

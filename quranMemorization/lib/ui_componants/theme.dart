@@ -6,6 +6,7 @@ class Themes {
 
       static final lightTheme=
   ThemeData.light().copyWith(
+    scaffoldBackgroundColor: Colors.white,
     dividerColor: Colors.grey.shade300,
     primaryColor: darkBlue,
     textTheme: TextTheme().copyWith(

@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+import '../core/services/hive_boxes.dart';
+
 part 'student_model.g.dart';
 
 //flutter pub run build_runner build
@@ -61,6 +63,9 @@ int? get rate => _rate;
     }
   }
 
-
+  int getStudentAttendance(){
+    final box=Boxes.sessionsBox();
+    return box.values.where((session) => session.studentId==id).length;
+  }
 
 }

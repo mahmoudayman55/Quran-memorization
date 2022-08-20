@@ -68,7 +68,14 @@ class SessionsView extends StatelessWidget {
                                   )),
                                   DataCell(Icon(Icons.web_rounded)),
                                   DataCell(
-RateDropDownButton(0,'rate','error',(){})                                  ),
+NumericDropDownButton(maxWidth*0.2,maxHeight*0.05,_sessionController.sessions[index].rate,'rate',null,(value){
+  _sessionController.sessions[index].rate=value;
+  _sessionController.update();
+  log(_sessionController.sessions[index].rate.toString());
+
+
+
+},10)                                  ),
                                   DataCell(Text(
                                     '_studentController.students[index].evaluation',
                                     style:

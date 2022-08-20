@@ -1,33 +1,43 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quran_memorization/core/services/quran.dart';
+import 'package:quran_memorization/model/surah_model.dart';
 
-class NumericDropDownButton extends StatelessWidget {
+class QuraanDropDownButton extends StatelessWidget {
+  final double width, height;
   final int value;
-  final int range;
   final String hint;
-  final double width,height;
-  String? errorText;
-  late final List<DropdownMenuItem<int>> _items;
   final Function onChanged;
+  String? errorText;
+
+  QuraanDropDownButton(this.width, this.height, this.value, this.hint, this.onChanged,{this.errorText});
 
 
-  NumericDropDownButton(this.width,this.height,
-      this.value, this.hint, this.errorText, this.onChanged,this.range){
-    _items=List.generate(range, (index) => DropdownMenuItem(child: Text('${index+1}'),value: index+1,));
-  }
 
+  final List<DropdownMenuItem<int>> _items = List.generate(
+      114,
+          (index) {
+
+        return DropdownMenuItem(
+          child: Text(
+              Quran.quran.map((e) => Surah.fromJson(e)).toList()[index].name),value: Quran.quran.map((e) => Surah.fromJson(e)).toList()[index].id,);
+      });
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Container(width:width ,height: height,
+        Container(
+          width: width,
+          height: height,
           decoration: BoxDecoration(
               color: Colors.grey[100], borderRadius: BorderRadius.circular(30)),
           child: Padding(
             padding:
-            const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 5),
+                const EdgeInsets.only(left: 8, right: 8, top: 10, bottom: 5),
             child: DropdownButton<int>(
               value: value,
               hint: Text(
@@ -39,7 +49,8 @@ class NumericDropDownButton extends StatelessWidget {
               items: _items,
               onChanged: (item) {
                 onChanged(item);
-              },underline: Container(),
+              },
+              underline: Container(),
               isExpanded: true,
               icon: Icon(Icons.keyboard_arrow_down),
             ),
@@ -48,9 +59,11 @@ class NumericDropDownButton extends StatelessWidget {
         if (errorText != null)
           Padding(
             padding: EdgeInsets.only(left: 30, top: 0),
-            child: Text(errorText!, style: TextStyle(fontSize: 12, color: Colors.red[800]),),
+            child: Text(
+              errorText!,
+              style: TextStyle(fontSize: 12, color: Colors.red[800]),
+            ),
           )
-
       ],
     );
   }
