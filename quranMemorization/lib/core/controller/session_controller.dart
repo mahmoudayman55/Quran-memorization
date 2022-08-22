@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quran_memorization/core/controller/students_controller.dart';
+import 'package:quran_memorization/core/functions/day_mouth_year_format.dart';
 import 'package:quran_memorization/core/services/hive_boxes.dart';
 import 'package:quran_memorization/core/services/quran.dart';
 import 'package:quran_memorization/model/assignment_model.dart';
 import 'package:quran_memorization/model/session_model.dart';
 import 'package:quran_memorization/model/student_model.dart';
 import 'package:quran_memorization/ui_componants/confirm_button.dart';
+import 'package:quran_memorization/view/sessions_view.dart';
 
 import '../../model/surah_model.dart';
 import '../../ui_componants/custom_data_column.dart';
@@ -25,6 +27,15 @@ class SessionController extends GetxController{
     Assignment assignmentToAdd=Assignment(Surah(1,"الفاتحة",7),1,6);
   Assignment fromSurah=Assignment(Surah(1,"الفاتحة",7),1,6);
   Assignment toSurah=Assignment(Surah(1,"الفاتحة",7),1,6);
+
+    endSession(){
+      final box= Boxes.sessionsBox();
+      session.id=Random().nextInt(1000000);
+     box.put(session.id, session);
+     sessions.add(session);
+     customSnackBar('تم الحفظ بنجاح', "${session.student.name} --- ${getDMYFormat(session.dateTime)}", true);
+     Get.off(SessionsView());
+    }
 
   @override
   void onInit() {

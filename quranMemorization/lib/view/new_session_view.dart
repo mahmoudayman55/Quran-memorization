@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quran_memorization/core/controller/session_controller.dart';
 import 'package:quran_memorization/core/enums/device_type.dart';
+import 'package:quran_memorization/core/functions/day_mouth_year_format.dart';
 import 'package:quran_memorization/model/assignment_model.dart';
 import 'package:quran_memorization/model/surah_model.dart';
 import 'package:quran_memorization/ui_componants/assignment_table.dart';
@@ -35,9 +36,7 @@ class NewSessionView extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-              '${_sessionController.session.dateTime.day}-${_sessionController
-                  .session.dateTime.month}-${_sessionController.session.dateTime
-                  .year}'),
+              getDMYFormat(_sessionController.session.dateTime)),
         ),
         body: SafeArea(
           child: Padding(
@@ -135,6 +134,8 @@ class NewSessionView extends StatelessWidget {
                         'الجديد',
                         'لا يوجد تسميع جديد',AssignmentType.todayNew
                     ),
+                    ConfirmButton('انهاء الحصه', _sessionController.endSession, Themes.softBlue, maxWidth, maxHeight*0.06
+                    )
                   ],
                 ),
               );

@@ -56,8 +56,21 @@ class Session  {
 
 
 
-  List<Assignment> get lastNewAssignment => _lastNewAssignment;
-
+  List<Assignment> get lastNewAssignment {
+    final box= Boxes.sessionsBox();
+    try {
+      if(box.values.where((element) => element.studentId==studentId).isEmpty){
+        return [];
+      }
+      Session session=box.values.firstWhere((element) => element.studentId==studentId);
+      _lastNewAssignment=session.todayNewAssignment;
+    } on Exception catch (e) {
+      log(e.toString());
+      _lastNewAssignment=[];
+    }
+    log(_lastNewAssignment.length.toString());
+    return _lastNewAssignment;
+  }
   List<Assignment> get todayRevisionAssignment => _todayRevisionAssignment;
 
   List<Assignment> get todayNewAssignment => _todayNewAssignment;
@@ -69,13 +82,13 @@ class Session  {
         return [];
       }
       Session session=box.values.firstWhere((element) => element.studentId==studentId);
-      _lastRevisionAssignment=session._todayRevisionAssignment;
+      _lastRevisionAssignment=session.todayRevisionAssignment;
     } on Exception catch (e) {
 log(e.toString());
 _lastRevisionAssignment=[];
     }
     log(_lastNewAssignment.length.toString());
-    return _lastNewAssignment;
+    return _lastRevisionAssignment;
   }
 
   set lastNewAssignment(List<Assignment> value) {
