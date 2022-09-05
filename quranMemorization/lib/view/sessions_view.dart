@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quran_memorization/core/controller/session_controller.dart';
+import 'package:quran_memorization/ui_componants/assignment_table_widget.dart';
 import 'package:quran_memorization/ui_componants/confirm_button.dart';
 import 'package:quran_memorization/ui_componants/custom_data_column.dart';
 import 'package:quran_memorization/ui_componants/device_info_widget.dart';
@@ -30,11 +31,12 @@ class SessionsView extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
             backgroundColor: Themes.darkBlue,
             child: Icon(Icons.add),
-            onPressed: () =>_sessionController.startSession(context, maxWidth, maxHeight)),
+            onPressed: () =>
+                _sessionController.startSession(context, maxWidth, maxHeight)),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.all(5),
-            child: GetBuilder<SessionController>(builder: (controller) {
+            child: GetBuilder<SessionController>(builder: (c) {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
@@ -52,7 +54,7 @@ class SessionsView extends StatelessWidget {
                       CustomDataColumn('التاريخ', context),
                     ],
                     rows: List<DataRow>.generate(
-                     _sessionController.sessions.length   ,
+                        _sessionController.sessions.length,
                         (index) => DataRow(
                                 color: MaterialStateProperty.resolveWith<Color>(
                                     (states) {
@@ -62,20 +64,29 @@ class SessionsView extends StatelessWidget {
                                 }),
                                 cells: [
                                   DataCell(Text(
-                                   _sessionController.sessions[index].student.name,
+                                    _sessionController
+                                        .sessions[index].student.name,
                                     style:
                                         Theme.of(context).textTheme.headline4,
                                   )),
-                                  DataCell(Icon(Icons.web_rounded)),
-                                  DataCell(
-NumericDropDownButton(maxWidth*0.2,maxHeight*0.05,_sessionController.sessions[index].rate,'rate',null,(value){
-  _sessionController.sessions[index].rate=value;
-  _sessionController.update();
-  log(_sessionController.sessions[index].rate.toString());
-
-
-
-},10)                                  ),
+                                  DataCell(IconButton(
+                                    icon: Icon(
+                                      Icons.web,
+                                      color: Colors.lightGreen,
+                                    ),
+                                    onPressed: () => Get.defaultDialog(
+                                        content: AssignmentTable(
+                                            maxHeight,
+                                            maxWidth,
+                                            _sessionController.sessions[index]
+                                                .lastNewAssignment)),
+                                  )),
+                                  DataCell(Text(
+                                    _sessionController.sessions[index].rate
+                                        .toString(),
+                                    style:
+                                        Theme.of(context).textTheme.headline4,
+                                  )),
                                   DataCell(Text(
                                     '_studentController.students[index].evaluation',
                                     style:

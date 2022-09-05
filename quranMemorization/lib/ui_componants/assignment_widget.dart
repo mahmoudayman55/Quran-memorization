@@ -1,4 +1,5 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
+import 'dart:math';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +8,16 @@ import 'package:quran_memorization/core/enums/device_type.dart';
 import 'package:quran_memorization/core/services/quran.dart';
 import 'package:quran_memorization/model/assignment_model.dart';
 import 'package:quran_memorization/model/surah_model.dart';
+import 'package:quran_memorization/ui_componants/assignment_table_widget.dart';
 import 'package:quran_memorization/ui_componants/confirm_button.dart';
 import 'package:quran_memorization/ui_componants/quran_drop_down_button.dart';
 import 'package:quran_memorization/ui_componants/rate_drop_down_button.dart';
 import 'package:quran_memorization/ui_componants/theme.dart';
 
+import '../core/services/constants.dart';
 import 'custom_data_column.dart';
 
-class AssignmentTable extends StatelessWidget {
+class AssignmentWidget extends StatelessWidget {
   double maxHeight, maxWidth;
   String title, emptyMessage;
   final AssignmentType assignmentType;
@@ -38,7 +41,7 @@ class AssignmentTable extends StatelessWidget {
     return assignments;
   }
 
-  AssignmentTable(
+  AssignmentWidget(
     this.maxHeight,
     this.maxWidth,
     this.title,
@@ -97,11 +100,12 @@ class AssignmentTable extends StatelessWidget {
                                         maxHeight * 0.05,
                                         controller.assignmentToAdd.surah.id,
                                         '', (v) {
-                                      controller.assignmentToAdd.surah =
+                                      controller.assignmentToAdd.surahId =
                                           Surah.fromJson(Quran.quran
-                                              .where((element) =>
-                                                  element['id'] == v)
-                                              .toList()[0]);
+                                                  .where((element) =>
+                                                      element['id'] == v)
+                                                  .toList()[0])
+                                              .id;
                                       controller.update();
                                     }),
                                   ],
@@ -152,16 +156,23 @@ class AssignmentTable extends StatelessWidget {
                               switch (assignmentType) {
                                 case AssignmentType.todayRevision:
                                   controller.session.todayRevisionAssignment
-                                      .add(controller.assignmentToAdd);
+                                      .add(controller.assignmentToAdd
+                                        ..sessionId = controller.sessionId
+                                        ..type = 'today_revision');
                                   break;
                                 case AssignmentType.todayNew:
                                   controller.session.todayNewAssignment
-                                      .add(controller.assignmentToAdd);
+                                      .add(controller.assignmentToAdd
+                                        ..sessionId = controller.sessionId
+                                        ..type = 'today_new');
                                   break;
                                 default:
-                                  log('only todayNew and todayRevision are able to edit');
+                                  dev.log(
+                                      'only todayNew and todayRevision are able to edit');
                               }
-                              controller.assignmentToAdd=Assignment(Surah(1,"الفاتحة",7),1,6);
+                              controller.assignmentToAdd =
+                                  Assignment(0, 'type', 0, 1, 6);
+
                               controller.update();
                             }, Themes.softBlue, maxWidth * 0.3,
                                 maxHeight * 0.045)
@@ -192,13 +203,13 @@ class AssignmentTable extends StatelessWidget {
                                     QuraanDropDownButton(
                                         maxWidth * 0.25,
                                         maxHeight * 0.05,
-                                        controller.fromSurah.surah.id,
+                                        controller.fromSurah.surahId,
                                         '', (v) {
-                                      controller.fromSurah.surah =
-                                          Surah.fromJson(Quran.quran
-                                              .where((element) =>
-                                                  element['id'] == v)
-                                              .toList()[0]);
+                                      controller.fromSurah.surahId = v;
+                                      dev.log(v.toString());
+                                      dev.log(
+                                          "selected surah: ${controller.fromSurah.surah}");
+
                                       controller.update();
                                     }),
                                   ],
@@ -240,18 +251,29 @@ class AssignmentTable extends StatelessWidget {
                                   surahsToAdd.forEach((element) {
                                     controller.session.todayRevisionAssignment
                                         .add(Assignment(
-                                            element, 1, element.totalVerse));
+                                            Random().nextInt(1000000),
+                                            'today_revision',
+                                            controller.sessionId,
+                                            1,
+                                            element.totalVerse)..surahId=element.id
+                                    );
                                   });
                                   break;
                                 case AssignmentType.todayNew:
                                   surahsToAdd.forEach((element) {
-                                    controller.session.todayNewAssignment.add(
-                                        Assignment(
-                                            element, 1, element.totalVerse));
+                                    controller.session.todayNewAssignment
+                                        .add(Assignment(
+                                        Random().nextInt(1000000),
+                                        'today_new',
+                                        controller.sessionId,
+                                        1,
+                                        element.totalVerse)..surahId=element.id
+                                    );
                                   });
                                   break;
                                 default:
-                                  log('only todayNew and todayRevision are able to edit');
+                                  dev.log(
+                                      'only todayNew and todayRevision are able to edit');
                               }
 
                               controller.update();
@@ -268,50 +290,8 @@ class AssignmentTable extends StatelessWidget {
                     emptyMessage,
                     style: Theme.of(context).textTheme.headline1,
                   )
-                : DataTable(
-                    dividerThickness: 1,
-                    dataRowHeight: maxHeight * 0.04,
-                    headingRowHeight: maxHeight * 0.04,
-                    columnSpacing: maxWidth * 0.042,
-                    headingRowColor: MaterialStateColor.resolveWith(
-                        (states) => Themes.darkBlue),
-                    columns: [
-                      CustomDataColumn('السورة', context),
-                      CustomDataColumn('من الآية', context),
-                      CustomDataColumn('الي الآية', context),
-                    ],
-                    rows: List<DataRow>.generate(
-                        getAssignmentList(controller).length,
-                        (index) => DataRow(
-                                color: MaterialStateProperty.resolveWith<Color>(
-                                    (states) {
-                                  return index % 2 == 0
-                                      ? Colors.grey.shade50
-                                      : Colors.grey.shade300;
-                                }),
-                                cells: [
-                                  DataCell(Text(
-                                    getAssignmentList(controller)[index]
-                                        .surah
-                                        .name,
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  )),
-                                  DataCell(Text(
-                                    getAssignmentList(controller)[index]
-                                        .fromVerse
-                                        .toString(),
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  )),
-                                  DataCell(Text(
-                                    getAssignmentList(controller)[index]
-                                        .toVerse
-                                        .toString(),
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  )),
-                                ]))),
+                : AssignmentTable(
+                    maxHeight, maxWidth, getAssignmentList(controller)),
           ],
         );
       }),

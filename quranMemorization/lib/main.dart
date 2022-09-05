@@ -27,111 +27,18 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(StudentAdapter());
-  await Hive.openBox<Student>('students');
-
-  Hive.registerAdapter(SessionAdapter());
   Hive.registerAdapter(AssignmentAdapter());
+  Hive.registerAdapter(SessionAdapter());
   Hive.registerAdapter(SurahAdapter());
+
+  await Hive.openBox<Student>('students');
+  await Hive.openBox<Assignment>('assignments');
+  log('message');
+Boxes.assignmentsBox().values.forEach((element) {log(element.surahId.toString());});
   await Hive.openBox<Session>('sessions');
-
-  var box = Boxes.studentsBox();
-  List<Student> students = box.values.toList();
-  students.forEach((element) {
-    log("${element.id}");
-  });
-  //for testing
-  var seBox = Boxes.sessionsBox();
-  log(seBox.isOpen.toString());
-
- /* seBox.put(
-      1,
-      Session(15369,5)
-        ..lastNewAssignment =
-        [
-          Assignment(
-              Surah(Quran.quran[1]['id'],Quran.quran[1]['name'], Quran.quran[1]['total_verses']),
-              1,
-              Quran.quran[1]['total_verses']),
+  log('message');
 
 
-
-          Assignment(
-              Surah(Quran.quran[15]['id'],Quran.quran[15]['name'], Quran.quran[15]['total_verses']),
-              15,
-              Quran.quran[15]['total_verses']),
-
-
-
-
-          Assignment(
-              Surah(Quran.quran[16]['id'],Quran.quran[16]['name'], Quran.quran[16]['total_verses']),
-              16,
-              Quran.quran[16]['total_verses'])
-        ]
-        ..lastRevisionAssignment =   [
-          Assignment(
-              Surah(Quran.quran[1]['id'],Quran.quran[1]['name'], Quran.quran[1]['total_verses']),
-              1,
-              Quran.quran[1]['total_verses']),
-
-
-
-          Assignment(
-              Surah(Quran.quran[15]['id'],Quran.quran[15]['name'], Quran.quran[15]['total_verses']),
-              15,
-              Quran.quran[15]['total_verses']),
-
-
-
-
-          Assignment(
-              Surah(Quran.quran[16]['id'],Quran.quran[16]['name'], Quran.quran[16]['total_verses']),
-              16,
-              Quran.quran[16]['total_verses'])
-        ]
-        ..todayNewAssignment =   [
-          Assignment(
-              Surah(Quran.quran[1]['id'],Quran.quran[1]['name'], Quran.quran[1]['total_verses']),
-              1,
-              Quran.quran[1]['total_verses']),
-
-
-
-          Assignment(
-              Surah(Quran.quran[15]['id'],Quran.quran[15]['name'], Quran.quran[15]['total_verses']),
-              15,
-              Quran.quran[15]['total_verses']),
-
-
-
-
-          Assignment(
-              Surah(Quran.quran[16]['id'],Quran.quran[16]['name'], Quran.quran[16]['total_verses']),
-              16,
-              Quran.quran[16]['total_verses'])
-        ]
-        ..todayRevisionAssignment =   [
-          Assignment(
-              Surah(Quran.quran[1]['id'],Quran.quran[1]['name'], Quran.quran[1]['total_verses']),
-              1,
-              Quran.quran[1]['total_verses']),
-
-
-
-          Assignment(
-              Surah(Quran.quran[15]['id'],Quran.quran[15]['name'], Quran.quran[15]['total_verses']),
-              15,
-              Quran.quran[15]['total_verses']),
-
-
-
-
-          Assignment(
-              Surah(Quran.quran[16]['id'],Quran.quran[16]['name'], Quran.quran[16]['total_verses']),
-              16,
-              Quran.quran[16]['total_verses'])
-        ]);
-*/
   runApp(const MyApp());
 }
 

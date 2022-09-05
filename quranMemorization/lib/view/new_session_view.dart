@@ -7,7 +7,7 @@ import 'package:quran_memorization/core/enums/device_type.dart';
 import 'package:quran_memorization/core/functions/day_mouth_year_format.dart';
 import 'package:quran_memorization/model/assignment_model.dart';
 import 'package:quran_memorization/model/surah_model.dart';
-import 'package:quran_memorization/ui_componants/assignment_table.dart';
+import 'package:quran_memorization/ui_componants/assignment_widget.dart';
 import 'package:quran_memorization/ui_componants/confirm_button.dart';
 import 'package:quran_memorization/ui_componants/custom_data_column.dart';
 import 'package:quran_memorization/ui_componants/custom_title.dart';
@@ -89,13 +89,13 @@ class NewSessionView extends StatelessWidget {
                       ],
                     ),
                     CustomTitle('التسميع', maxHeight * 0.04),
-                    AssignmentTable(
+                    AssignmentWidget(
                         maxHeight,
                         maxWidth,
                         'المراجعة',
                         'لا يوجد مراجعة',AssignmentType.lastRevision
                         ),
-                    AssignmentTable(
+                    AssignmentWidget(
                         maxHeight,
                         maxWidth,
                         'الجديد',
@@ -112,6 +112,7 @@ class NewSessionView extends StatelessWidget {
                             null,
                                 (value) {
                               _sessionController.session.rate = value;
+                              _sessionController.update();
                             },
                             10),
                         CustomTitle(
@@ -123,12 +124,12 @@ class NewSessionView extends StatelessWidget {
 
                     CustomTitle('الحصه القادمة', maxHeight * 0.04),
 
-                    AssignmentTable(
+                    AssignmentWidget(
                         maxHeight,
                         maxWidth,
                         'المراجعة',
                         'لا يوجد تسميع جديد',AssignmentType.todayRevision
-                    ),   AssignmentTable(
+                    ),   AssignmentWidget(
                         maxHeight,
                         maxWidth,
                         'الجديد',

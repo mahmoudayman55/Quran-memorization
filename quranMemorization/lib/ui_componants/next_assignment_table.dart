@@ -2,7 +2,7 @@
 // import 'package:flutter/material.dart';
 //
 // import '../model/assignment_model.dart';
-// import 'assignment_table.dart';
+// import 'assignment_widget.dart';
 //
 // class NextAssignment extends StatelessWidget {
 //   double maxHeight,maxWidth;
