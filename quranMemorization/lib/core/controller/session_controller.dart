@@ -49,7 +49,7 @@ dev.log(session.id.toString());
 dev.log((session.student..lastSessionId=session.id).lastSessionId.toString());
     customSnackBar('تم الحفظ بنجاح',
         "${session.student.name} --- ${getDMYFormat(session.dateTime)}", true);
-    Get.off(SessionsView());
+    Get.offNamed("/sessions");
     session.lastRevisionAssignment.clear();
     session.lastNewAssignment.clear();
     session.todayRevisionAssignment.clear();
@@ -67,6 +67,7 @@ dev.log((session.student..lastSessionId=session.id).lastSessionId.toString());
     dev.log("getting sessions");
     var box = Boxes.sessionsBox();
     sessions = box.values.toList();
+    sessions.sort((a, b) =>a.dateTime.compareTo(b.dateTime) );
     dev.log(sessions.isEmpty?"empty":sessions[0].student.id.toString());
   }
 

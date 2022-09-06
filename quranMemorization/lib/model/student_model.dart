@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:quran_memorization/model/session_model.dart';
 
 import '../core/services/hive_boxes.dart';
 
@@ -66,6 +67,23 @@ int? get rate => _rate;
   int getStudentAttendance(){
     final box=Boxes.sessionsBox();
     return box.values.where((session) => session.studentId==id).length;
+  }
+Session? previousSession(int currentSessionId){
+    List<Session>previousSessions=sessions();
+    for(int i=0;i<previousSessions.length;i++){
+      if(previousSessions[i].id==currentSessionId){
+        return i==0?null:previousSessions[i-1];
+      }
+    }
+    return null;
+
+
+}
+  List<Session>sessions(){
+    var box=Boxes.sessionsBox();
+    List<Session>sessions=box.values.where((element) => element.studentId==_id).toList();
+    sessions.sort((a, b) => a.dateTime.compareTo(b.dateTime),);
+    return sessions;
   }
 
 }

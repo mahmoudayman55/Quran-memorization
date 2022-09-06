@@ -71,11 +71,62 @@ class Session {
 
     return _lastRevisionAssignment;
   }
+  List<Assignment> get previousRevision {
+    final box = Boxes.assignmentsBox();
+      _lastRevisionAssignment = box.values
+          .where((element) =>
+      element.sessionId == id &&
+          element.type == 'today_revision')
+          .toList();
+
+    return _lastRevisionAssignment;
+  }
+  List<Assignment> get previousNew {
+    final box = Boxes.assignmentsBox();
+      _lastRevisionAssignment = box.values
+          .where((element) =>
+      element.sessionId == id &&
+          element.type == 'today_new')
+          .toList();
+
+    return _lastRevisionAssignment;
+  }
 
 
-  List<Assignment> get todayRevisionAssignment => _todayRevisionAssignment;
+  List<Assignment> get todayRevisionAssignment {
+    final box = Boxes.assignmentsBox();
+    List<Assignment>assignments=box.values
+        .where((element) =>
+    element.sessionId == id &&
+        element.type == 'today_revision')
+        .toList();
+    if(assignments.isEmpty){
+      return _todayRevisionAssignment;
+    }
+    else{
+      _todayRevisionAssignment= assignments;
+      return _todayRevisionAssignment;
 
-  List<Assignment> get todayNewAssignment => _todayNewAssignment;
+    }  }
+
+  List<Assignment> get todayNewAssignment {
+
+    final box = Boxes.assignmentsBox();
+    List<Assignment>assignments=box.values
+        .where((element) =>
+    element.sessionId == id &&
+        element.type == 'today_new')
+        .toList();
+    if(assignments.isEmpty){
+      return _todayNewAssignment;
+    }
+    else{
+      _todayNewAssignment= assignments;
+      return _todayNewAssignment;
+
+    }
+
+  }
 
 
   set lastNewAssignment(List<Assignment> value) {

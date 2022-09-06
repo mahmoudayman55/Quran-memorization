@@ -27,7 +27,7 @@ class NumericDropDownButton extends StatelessWidget {
               color: Colors.grey[100], borderRadius: BorderRadius.circular(30)),
           child: Padding(
             padding:
-            const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 5),
+            const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 5),
             child: DropdownButton<int>(
               value: value,
               hint: Text(

@@ -115,9 +115,9 @@ class NewSessionView extends StatelessWidget {
                               _sessionController.update();
                             },
                             10),
-                        CustomTitle(
-                            'التقييم العام\n${_sessionController.session.student
-                                .evaluation}', maxHeight * 0.04),
+                        // CustomTitle(
+                        //     'التقييم العام\n${_sessionController.session.student
+                        //         .evaluation}', maxHeight * 0.04),
 
                       ],
                     ),

@@ -49,15 +49,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(builder: (context, _) {
       return GetMaterialApp(
-        localizationsDelegates: [
+        localizationsDelegates:const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [
+        supportedLocales: const [
           Locale('ar', 'EN'),
         ],
-        locale: Locale('ar', 'EN'),
+        locale: const Locale('ar', 'EN'),
         theme: Themes.lightTheme,
         home: HomeView(),
         getPages: [

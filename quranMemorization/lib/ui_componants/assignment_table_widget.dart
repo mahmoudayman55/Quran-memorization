@@ -15,7 +15,7 @@ class AssignmentTable extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
+    return assignments.isEmpty?Text('لا يوجد تسميع',style: Theme.of(context).textTheme.headline2,):DataTable(
         dividerThickness: 1,
         dataRowHeight: maxHeight * 0.04,
         headingRowHeight: maxHeight * 0.04,
