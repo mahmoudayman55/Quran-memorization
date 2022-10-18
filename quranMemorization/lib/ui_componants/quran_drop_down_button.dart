@@ -12,18 +12,17 @@ class QuraanDropDownButton extends StatelessWidget {
   final Function onChanged;
   String? errorText;
 
-  QuraanDropDownButton(this.width, this.height, this.value, this.hint, this.onChanged,{this.errorText});
+  QuraanDropDownButton(
+      this.width, this.height, this.value, this.hint, this.onChanged,
+      {this.errorText});
 
-
-
-  final List<DropdownMenuItem<int>> _items = List.generate(
-      114,
-          (index) {
-
-        return DropdownMenuItem(
-          child: Text(
-              Quran.quran.map((e) => Surah.fromJson(e)).toList()[index].name),value: Quran.quran.map((e) => Surah.fromJson(e)).toList()[index].id,);
-      });
+  final List<DropdownMenuItem<int>> _items = List.generate(114, (index) {
+    return DropdownMenuItem(
+      child:
+          Text(Quran.quran.map((e) => Surah.fromJson(e)).toList()[index].name),
+      value: Quran.quran.map((e) => Surah.fromJson(e)).toList()[index].id,
+    );
+  });
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,13 +30,12 @@ class QuraanDropDownButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          width: width,
+          margin: EdgeInsets.all(5),
           height: height,
           decoration: BoxDecoration(
-              color: Colors.grey[100], borderRadius: BorderRadius.circular(30)),
+              color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
           child: Padding(
-            padding:
-                const EdgeInsets.only(left: 8, right: 8, top: 10, bottom: 5),
+            padding: const EdgeInsets.all(5),
             child: DropdownButton<int>(
               value: value,
               hint: Text(
@@ -58,7 +56,7 @@ class QuraanDropDownButton extends StatelessWidget {
         ),
         if (errorText != null)
           Padding(
-            padding: EdgeInsets.only(left: 30, top: 0),
+            padding: EdgeInsets.only(left: 0, top: 0),
             child: Text(
               errorText!,
               style: TextStyle(fontSize: 12, color: Colors.red[800]),

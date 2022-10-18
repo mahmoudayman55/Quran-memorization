@@ -5,13 +5,15 @@ import 'package:quran_memorization/ui_componants/theme.dart';
 import 'package:get/get.dart';
 
 class CustomDataColumn extends DataColumn {
- late String title;
- late BuildContext context;
+  late String title;
+  late BuildContext context;
 
- CustomDataColumn(this.title,this.context) : super(label: Text(
-   title,style: Theme.of(context).textTheme.headline5,
- ));
-
-
-
+  CustomDataColumn(this.title, this.context)
+      : super(
+            label: Text(
+          title,
+          style: Theme.of(context).textTheme.headline5!.copyWith(
+                color: Colors.lightGreen,
+              ),
+        ));
 }

@@ -17,33 +17,30 @@ class AssignmentAdapter extends TypeAdapter<Assignment> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Assignment(
+      fields[3] as int,
+      fields[5] as String,
       fields[4] as int,
-      fields[6] as String,
-      fields[5] as int,
+      fields[0] as int,
       fields[1] as int,
       fields[2] as int,
-    )
-      .._surah = fields[0] as Surah
-      .._surahId = fields[3] as int;
+    );
   }
 
   @override
   void write(BinaryWriter writer, Assignment obj) {
     writer
-      ..writeByte(7)
-      ..writeByte(0)
-      ..write(obj._surah)
-      ..writeByte(1)
-      ..write(obj.fromVerse)
-      ..writeByte(2)
-      ..write(obj.toVerse)
-      ..writeByte(3)
-      ..write(obj._surahId)
-      ..writeByte(4)
-      ..write(obj.id)
-      ..writeByte(5)
-      ..write(obj.sessionId)
       ..writeByte(6)
+      ..writeByte(0)
+      ..write(obj.fromVerse)
+      ..writeByte(1)
+      ..write(obj.toVerse)
+      ..writeByte(2)
+      ..write(obj.surahId)
+      ..writeByte(3)
+      ..write(obj.id)
+      ..writeByte(4)
+      ..write(obj.sessionId)
+      ..writeByte(5)
       ..write(obj.type);
   }
 

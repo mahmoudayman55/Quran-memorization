@@ -10,24 +10,24 @@ class Themes {
     dividerColor: Colors.grey.shade300,
     primaryColor: darkBlue,
     textTheme: TextTheme().copyWith(
-
+ headline1: TextStyle(fontFamily: "tajawal",
+      color:  Colors.black,fontWeight: FontWeight.bold,
+      fontSize: 15.sp,
+    ),
     headline3: TextStyle(fontFamily: "tajawal",
       color:  darkBlue,
       fontSize: 15.sp,
     ),
     headline2: TextStyle(fontFamily: "tajawal",
-      color:darkBlue,
-      fontSize: 18.sp,fontWeight: FontWeight.bold
+      color:Colors.black,
+      fontSize: 12.sp,fontWeight: FontWeight.bold
     ),
     headline4: TextStyle(fontFamily: "tajawal",
       color:  Colors.black,
       fontWeight: FontWeight.w500,
       fontSize: 15.sp,
     ),
-    headline1: TextStyle(fontFamily: "tajawal",
-      color:  darkBlue,fontWeight: FontWeight.bold,
-      fontSize: 22.sp,
-    ),
+   
     headline5: TextStyle(fontFamily: "tajawal",
       color:  Colors.white,
       fontWeight: FontWeight.bold,

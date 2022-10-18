@@ -12,7 +12,7 @@ class CustomTitle extends StatelessWidget {
     return Row(crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(margin: EdgeInsets.all(10),
-          color: Theme.of(context).primaryColor,
+          color: Colors.orange,
           width: 3,
           height: height,
         ),

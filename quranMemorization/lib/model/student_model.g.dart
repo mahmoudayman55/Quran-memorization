@@ -23,7 +23,7 @@ class StudentAdapter extends TypeAdapter<Student> {
       lastSessionId: fields[3] as int,
     )
       .._id = fields[0] as int
-      .._rate = fields[1] as int?
+      .._rate = fields[1] as double
       .._evaluation = fields[6] as String;
   }
 

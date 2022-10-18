@@ -18,118 +18,123 @@ import 'package:quran_memorization/view/sessions_view.dart';
 import '../../model/surah_model.dart';
 import '../../ui_componants/custom_data_column.dart';
 import '../../ui_componants/custom_snack_bar.dart';
+import '../../ui_componants/student_widget.dart';
 import '../../ui_componants/theme.dart';
 
 class SessionController extends GetxController {
-  int sessionId=Random().nextInt(1000000);
+  int sessionId = Random().nextInt(1000000);
 
   late Session session;
   List<Session> sessions = [];
 
-  Assignment assignmentToAdd = Assignment(0, 'type', 0, 1, 6);
-  Assignment fromSurah =
-      Assignment(Random().nextInt(1000000), 'type', 0,  1, 6);
-  Assignment toSurah =
-      Assignment(Random().nextInt(1000000), 'type', 0, 1, 6);
-
+  Assignment assignmentToAdd = Assignment(0, 'type', 0, 1, 1,1);
+  Assignment fromSurah = Assignment(Random().nextInt(1000000), 'type', 0, 1, 1,1);
+  Assignment toSurah = Assignment(Random().nextInt(1000000), 'type', 0, 1, 1,1);
+  TextEditingController searchController = TextEditingController();
   endSession() {
     final sessionsBox = Boxes.sessionsBox();
     final studentsBox = Boxes.studentsBox();
     final assignmentsBox = Boxes.assignmentsBox();
-    session.id =sessionId;
-    assignmentsBox.addAll(
-        session.todayNewAssignment +
-        session.todayRevisionAssignment);
-    sessionsBox.put(session.id, session);
+    session.id = sessionId;
     studentsBox.put(
         session.studentId,
-session.student..lastSessionId=session.id);
+        session.student
+          ..lastSessionId = session.id
+          ..rate = session.rate.toDouble());
+    session.todayNewAssignment.forEach((element) {
+    });
+
+    assignmentsBox
+        .addAll(session.todayNewAssignment+session.todayRevisionAssignment);
+    sessionsBox.put(session.id, session);
+
+    
     sessions.add(session);
-dev.log(session.id.toString());
-dev.log((session.student..lastSessionId=session.id).lastSessionId.toString());
+    Get.back();
+    update();
+
     customSnackBar('تم الحفظ بنجاح',
         "${session.student.name} --- ${getDMYFormat(session.dateTime)}", true);
-    Get.offNamed("/sessions");
     session.lastRevisionAssignment.clear();
     session.lastNewAssignment.clear();
     session.todayRevisionAssignment.clear();
     session.todayNewAssignment.clear();
-    sessionId=Random().nextInt(1000000);
-
+    sessionId = Random().nextInt(1000000);
   }
-
   @override
   void onInit() {
     getSessions();
   }
 
-  getSessions() {
-    dev.log("getting sessions");
-    var box = Boxes.sessionsBox();
-    sessions = box.values.toList();
-    sessions.sort((a, b) =>a.dateTime.compareTo(b.dateTime) );
-    dev.log(sessions.isEmpty?"empty":sessions[0].student.id.toString());
+  searchSessions(String keyWord) {
+    final sessionsBox = Boxes.sessionsBox();
+    sessions = sessionsBox.values
+        .where((element) =>
+            element.student.name.contains(keyWord) ||
+            element.student.id == int.tryParse(keyWord))
+        .toList();
+    update();
   }
 
-  startSession(BuildContext context, double maxWidth, double maxHeight) {
-    StudentsController _studentsController = Get.find<StudentsController>();
+  getSessions() {
+    var box = Boxes.sessionsBox();
+    sessions = box.values.toList();
+    sessions.sort((a, b) => a.dateTime.compareTo(b.dateTime));
+  }
 
+  startSession(
+      BuildContext context, double maxWidth, double maxHeight, bool isMob) {
+    StudentsController _studentsController = Get.find<StudentsController>();
     Get.defaultDialog(
-        content: SingleChildScrollView(
-      child: SizedBox(
-        height: maxHeight * 0.7,
-        width: maxWidth,
-        child: DataTable(
-            dividerThickness: 1,
-            dataRowHeight: maxHeight * 0.04,
-            headingRowHeight: maxHeight * 0.04,
-            columnSpacing: maxWidth * 0.042,
-            headingRowColor:
-                MaterialStateColor.resolveWith((states) => Themes.darkBlue),
-            columns: [
-              CustomDataColumn('الاسم', context),
-              CustomDataColumn('الهاتف', context),
-              CustomDataColumn('التقييم', context),
-              CustomDataColumn('ارشيف', context),
-            ],
-            rows: List<DataRow>.generate(
-                _studentsController.students.length,
-                (index) => DataRow(
-                        onSelectChanged: (st) {
-                          session = Session(
-                              Random().nextInt(100000), 1, DateTime.now())
-                            ..student = _studentsController.students[index];
-                          Get.offNamed('/new_session');
-                        },
-                        color:
-                            MaterialStateProperty.resolveWith<Color>((states) {
-                          return index % 2 == 0
-                              ? Colors.grey.shade50
-                              : Colors.grey.shade300;
-                        }),
-                        cells: [
-                          DataCell(Text(
-                            _studentsController.students[index].name,
-                            style: Theme.of(context).textTheme.headline4,
-                          )),
-                          DataCell(Text(
-                            _studentsController
-                                .students[index].parentPhoneNumber,
-                            style: Theme.of(context).textTheme.headline4,
-                          )),
-                          DataCell(Text(
-                            _studentsController.students[index].evaluation,
-                            style: Theme.of(context).textTheme.headline4,
-                          )),
-                          DataCell(IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.archive,
-                              color: Colors.lightGreen,
-                            ),
-                          )),
-                        ]))),
-      ),
-    ));
+        content: _studentsController.students.isEmpty
+            ? SizedBox(
+                height: maxHeight * 0.15,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        "لا يوجد طلاب",
+                        style: Theme.of(context).textTheme.headline1,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: ConfirmButton("اضافة طالب", () {
+                        _studentsController.addNewStudent(
+                            context, maxHeight, maxWidth, "sessions");
+                      }, Colors.red, maxWidth * 0.3, maxHeight * 0.03),
+                    )
+                  ],
+                ),
+              )
+            : SizedBox(
+                height: maxHeight * 0.8,
+                width: maxWidth,
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      mainAxisExtent: maxHeight * (isMob ? 0.3 : 0.2),
+                      crossAxisCount: isMob ? 1 : 3),
+                  itemBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                        height: maxHeight * 0.1,
+                        child: StudentWidget(
+                          maxWidth,
+                          maxHeight,
+                          isMob,
+                          _studentsController.students[index],
+                          () {
+                            session = Session(
+                                Random().nextInt(100000), 1, DateTime.now())
+                              ..student = _studentsController.students[index];
+                            Get.offNamed('/new_session');
+                          },
+                        ));
+                  },
+                  itemCount: _studentsController.students.length,
+                ),
+              ));
   }
 }

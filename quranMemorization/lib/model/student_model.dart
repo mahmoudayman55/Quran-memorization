@@ -12,78 +12,98 @@ part 'student_model.g.dart';
 
 @HiveType(typeId: 0)
 class Student extends HiveObject {
-@HiveField(0)
-late int _id;
+  @HiveField(0)
+  late int _id;
 
-@HiveField(1)
- int? _rate;
+  @HiveField(1)
+  double _rate = 0;
 
-@HiveField(2)
- int age;
+  @HiveField(2)
+  int age;
 
-@HiveField(3)
-int lastSessionId;
+  @HiveField(3)
+  int lastSessionId;
 
-@HiveField(4)
- String name;
+  @HiveField(4)
+  String name;
 
-@HiveField(5)
- String parentPhoneNumber;
+  @HiveField(5)
+  String parentPhoneNumber;
 
-@HiveField(6)
-late String _evaluation;
+  @HiveField(6)
+  late String _evaluation;
 
-  Student( this.age, this.name, this.parentPhoneNumber,{Key? key,this.lastSessionId =0});
+  Student(this.age, this.name, this.parentPhoneNumber,
+      {Key? key, this.lastSessionId = 0});
 
   int get id => _id;
 
   //eval getter
-String get evaluation => _evaluation;
+  String get evaluation {
+    // print("total rate= ${_rate}");
+    if (_rate >= 0 && _rate < 50) {
+      _evaluation = "مقبول";
+    } else if (_rate >= 50 && _rate < 60) {
+      _evaluation = "جيد";
+    } else if (_rate >= 60 && _rate < 80) {
+      _evaluation = "جيد جدا";
+    } else if (_rate >= 80 && _rate <= 100) {
+      _evaluation = "ممتاز";
+    }
+    return _evaluation;
+  }
 
 //rate getter
-int? get rate => _rate;
+  double get rate => _rate;
 
   set id(int value) {
     _id = value;
   } //rate setter
-  set rate(int? value) {
-    _rate = value;
 
-    //set eval according to rate
-    if(rate!>=0&&rate!<=3){
-      _evaluation="مقبول";
+  set rate(double value) {
+    if (value == 0) {
+      _rate = 0;
+      _evaluation = "مقبول";
+      return;
     }
-    else  if(rate!>=4&&rate!<=6){
-      _evaluation="جيد";
-    }
-    else  if(rate==7&&rate==8){
-      _evaluation="جيد جدا";
-    }
-    else  if(rate==9&&rate==10){
-      _evaluation="ممتاز";
-    }
+    double sum = value;
+
+    sessions().forEach((element) {
+      sum = sum + element.rate ;
+    });
+    _rate = (sum / (sessions().isEmpty?1:sessions().length+1 )) * 10;
+    print("total rate= ${_rate}");
   }
 
-  int getStudentAttendance(){
-    final box=Boxes.sessionsBox();
-    return box.values.where((session) => session.studentId==id).length;
+  int getStudentAttendance() {
+    final box = Boxes.sessionsBox();
+    return box.values.where((session) => session.studentId == id).length;
   }
-Session? previousSession(int currentSessionId){
-    List<Session>previousSessions=sessions();
-    for(int i=0;i<previousSessions.length;i++){
-      if(previousSessions[i].id==currentSessionId){
-        return i==0?null:previousSessions[i-1];
+
+  Session? previousSession(int currentSessionId) {
+    List<Session> previousSessions = sessions();
+    for (int i = 0; i < previousSessions.length; i++) {
+      if (previousSessions[i].id == currentSessionId) {
+        return i == 0 ? null : previousSessions[i - 1];
       }
     }
     return null;
-
-
-}
-  List<Session>sessions(){
-    var box=Boxes.sessionsBox();
-    List<Session>sessions=box.values.where((element) => element.studentId==_id).toList();
-    sessions.sort((a, b) => a.dateTime.compareTo(b.dateTime),);
-    return sessions;
   }
 
+  List<Session> sessions() {
+    try {
+      var box = Boxes.sessionsBox();
+      if (box.values.where((element) => element.studentId == _id).isEmpty) {
+        return [];
+      }
+      List<Session> sessions =
+          box.values.where((element) => element.studentId == _id).toList();
+      sessions.sort(
+        (a, b) => a.dateTime.compareTo(b.dateTime),
+      );
+      return sessions;
+    } on Exception catch (e) {
+      return [];
+    }
+  }
 }

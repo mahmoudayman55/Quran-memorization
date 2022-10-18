@@ -7,4 +7,6 @@ class Boxes{
   static Box<Student> studentsBox()=>Hive.box<Student>('students');
   static Box<Session> sessionsBox()=>Hive.box<Session>('sessions');
   static Box<Assignment> assignmentsBox()=>Hive.box<Assignment>('assignments');
+  static Box<bool> onBoardingBox()=>Hive.box<bool>('onboarding');
+
 }
